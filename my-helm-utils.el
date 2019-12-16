@@ -30,7 +30,7 @@
            finally return
            (let ((s (mapconcat #'identity values ", ")))
              (list (format "hsl(%s)" s)
-                   (format "hsla(%s, 1.0)" s)))))
+                   (format "hsla(%s, 0.5)" s)))))
 
 (defun helm-color-insert-hsl (candidate)
   (with-helm-current-buffer
