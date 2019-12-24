@@ -1,3 +1,5 @@
+;;; elpy-company-with-yasnippet.el
+
 (defun my-elpy-company--expand-snippet (annotation name)
   "Post completion function for `elpy-company-backend'.  If candidate
 is a function, then try to make and expand yasnippet."
@@ -130,3 +132,12 @@ Examples:
                      (when acc
                        (push (cl-reduce #'concat (nreverse acc)) ret))
                      (return (mapcar #'s-trim (nreverse ret))))))
+
+(provide 'elpy-company-with-yasnippet)
+
+;; Local Variables:
+;; coding: utf-8
+;; indent-tabs-mode: nil
+;; End:
+
+;;; elpy-company-with-yasnippet.el ends here
