@@ -89,6 +89,7 @@ the items of the sequence (or a list of tuples if more than one sequence)."
                         ;; dictionary
                         (format "${%d:, ${%d:%s}}" (incf ix) (incf ix) y))
                        ((string= y "...")
+                        ;; variable length arguemnts
                         (format "${%d:, ${%d:%s}}" (incf ix) (incf ix) y))
                        (t
                         ;; normal argument
