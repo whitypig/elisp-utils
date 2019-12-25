@@ -1,4 +1,4 @@
-;;; elpy-company-with-yasnippet.el
+;;; elpy-utils.el
 
 (defun my-elpy-company--expand-snippet (annotation name)
   "Post completion function for `elpy-company-backend'.  If candidate
@@ -134,11 +134,11 @@ Examples:
                        (push (cl-reduce #'concat (nreverse acc)) ret))
                      (return (mapcar #'s-trim (nreverse ret))))))
 
-(provide 'elpy-company-with-yasnippet)
+(provide 'elpy-utils)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; elpy-company-with-yasnippet.el ends here
+;;; elpy-utils.el
