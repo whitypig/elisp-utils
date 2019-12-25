@@ -60,7 +60,7 @@ the items of the sequence (or a list of tuples if more than one sequence)."
   ;; For now, we remove "self" in a parameter like the one in
   ;; "split(self)" because I cannot imagine the case where that self
   ;; is needed.
-  (message "DEBUG: signature=%s" signature)
+  ;; (message "DEBUG: signature=%s" signature)
   (when (and name signature)
     (let* ((signature (replace-regexp-in-string "(self)" "()" signature))
            (params
@@ -72,7 +72,7 @@ the items of the sequence (or a list of tuples if more than one sequence)."
                                              ""
                                              (match-string 1 signature))))))
            (ix 1))
-      (message "DEBUG: params=%s" params)
+      ;; (message "DEBUG: params=%s" params)
       (concat "${1:("
               (if params
                   (cl-reduce
@@ -133,6 +133,15 @@ Examples:
                      (when acc
                        (push (cl-reduce #'concat (nreverse acc)) ret))
                      (return (mapcar #'s-trim (nreverse ret))))))
+
+(defun my-elpy-eval-defun-or-send-region (&optional arg)
+  (interactive "P")
+  (cond
+   ((use-region-p)
+    (elpy-shell-send-region-or-buffer-and-step)
+    (deactivate-mark))
+   (t
+    (elpy-shell-send-defun))))
 
 (provide 'elpy-utils)
 
