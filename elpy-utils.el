@@ -60,11 +60,13 @@ the items of the sequence (or a list of tuples if more than one sequence)."
   ;; For now, we remove "self" in a parameter like the one in
   ;; "split(self)" because I cannot imagine the case where that self
   ;; is needed.
-  ;; (message "DEBUG: signature=%s" signature)
-  (when (and name signature)
-    (let* ((signature (replace-regexp-in-string "(self)" "()" signature))
+  (message "DEBUG: signature=%s" signature)
+  (when (stringp name)
+    (let* ((signature (and signature
+                           (replace-regexp-in-string "(self)" "()" signature)))
            (params
-            (and (string-match (format "%s(\\([^)]*\\))" name) signature)
+            (and signature
+                 (string-match (format "%s(\\([^)]*\\))" name) signature)
                  (cl-remove-if
                   (lambda (elt) (member elt '("/" "*")))
                   (elpy-company--split-string-by-toplevel-comma
@@ -72,7 +74,7 @@ the items of the sequence (or a list of tuples if more than one sequence)."
                                              ""
                                              (match-string 1 signature))))))
            (ix 1))
-      ;; (message "DEBUG: params=%s" params)
+      (message "DEBUG: params=%s" params)
       (concat "${1:("
               (if params
                   (cl-reduce
@@ -99,8 +101,54 @@ the items of the sequence (or a list of tuples if more than one sequence)."
                                 y)))))
                    params
                    :initial-value "")
-                "${2:}")
+                "")
               ")}$0"))))
+
+;; (defun my-elpy-company--make-yasnippet-template (name signature)
+;;   ;; For now, we remove "self" in a parameter like the one in
+;;   ;; "split(self)" because I cannot imagine the case where that self
+;;   ;; is needed.
+;;   (message "DEBUG: signature=%s" signature)
+;;   (when (and name signature)
+;;     (let* ((signature (replace-regexp-in-string "(self)" "()" signature))
+;;            (params
+;;             (and (string-match (format "%s(\\([^)]*\\))" name) signature)
+;;                  (cl-remove-if
+;;                   (lambda (elt) (member elt '("/" "*")))
+;;                   (elpy-company--split-string-by-toplevel-comma
+;;                    (replace-regexp-in-string " /$"
+;;                                              ""
+;;                                              (match-string 1 signature))))))
+;;            (ix 1))
+;;       (message "DEBUG: params=%s" params)
+;;       (concat "${1:("
+;;               (if params
+;;                   (cl-reduce
+;;                    (lambda (x y)
+;;                      (concat
+;;                       x
+;;                       (cond
+;;                        ((string-match-p "=" y)
+;;                         ;; default argument
+;;                         (concat (if (= ix 1)
+;;                                     (format "${%d:%s}" (incf ix) y)
+;;                                   (format "${%d:, ${%d:%s}}" (incf ix) (incf ix) y))))
+;;                        ((string-match-p "\\*\\*" y)
+;;                         ;; dictionary
+;;                         (format "${%d:, ${%d:%s}}" (incf ix) (incf ix) y))
+;;                        ((string= y "...")
+;;                         ;; variable length arguemnts
+;;                         (format "${%d:, ${%d:%s}}" (incf ix) (incf ix) y))
+;;                        (t
+;;                         ;; normal argument
+;;                         (format "%s${%d:%s}"
+;;                                 (if (= 1 ix) "" ", ")
+;;                                 (incf ix)
+;;                                 y)))))
+;;                    params
+;;                    :initial-value "")
+;;                 "${2:}")
+;;               ")}$0"))))
 
 (defun my-elpy-company--split-string-by-toplevel-comma (s)
   "Split string S by toplevel SEPARATORS.
@@ -150,4 +198,4 @@ Examples:
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; elpy-utils.el
+;;; elpy-utils.el ends here
