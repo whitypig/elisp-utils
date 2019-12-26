@@ -36,6 +36,8 @@
 
 (define-key python-mode-map (kbd "C-M-u") #'py-utils-up-list)
 
+(provide 'python-mode-utils)
+
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
